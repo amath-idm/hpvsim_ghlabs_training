@@ -58,7 +58,7 @@ def run_calibration():
         genotype_pars=genotype_pars,
         extra_sim_results=results_to_plot,
         datafiles=datafiles,
-        total_trials=3, n_workers=1
+        total_trials=4, n_workers=4
     )
     calib.calibrate(die=True)
     calib.plot(res_to_plot=4)
