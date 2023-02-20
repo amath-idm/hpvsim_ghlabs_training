@@ -33,3 +33,8 @@ msim.run()
 msim.sims[0].plot()
 msim.sims[1].plot()
 
+# Exercise:
+# Consider the outputs you got from the last plot. Now consider the parameters in parameters.py.
+# What parameters do you think you might vary if you wanted cancers to peak at an older age?
+
+
