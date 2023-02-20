@@ -15,19 +15,21 @@ import sciris as sc     # For utilities
 sim = hpv.Sim().run()
 sim.plot()
 
-# Modifying the hellow world example
+# Modifying the hello world example
 # The default parameter values are all recorded in hpvsim/parameters.py
 # These can be modified by passing a parameter dictionary, or directly
 # Example 2 (modifying pars directly):
 sim_latent = hpv.Sim(hpv_control_prob=0.2) # 20% chance that infections are controlled latently
-sim_latent.run()
-sim_latent.plot()
 
 # Example 3 (using a pars dictionary):
 pars = dict(
     location = 'kenya',
-    n_agents = 5e3,
 )
 sim_kenya = hpv.Sim(pars=pars)
-sim_kenya.run()
-sim_kenya.plot()
+
+# It's time-consuming to run each of these individually, so instead let's run them in parallel
+msim = hpv.MultiSim(sims=[sim_latent, sim_kenya])
+msim.run()
+msim.sims[0].plot()
+msim.sims[1].plot()
+
