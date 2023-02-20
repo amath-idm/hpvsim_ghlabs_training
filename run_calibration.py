@@ -97,12 +97,14 @@ def run_premade_calibration():
     sim = hpv.Sim(pars=pars)
 
     # Load pre-made calibration parameters
-    file = 'results/nigeria_pars_prerun.obj'
-    calib = sc.loadobj(file)
+    calib_pars_file = 'results/nigeria_pars_prerun.obj'
+    calib_file = 'results/nigeria_calib.obj'
+    calib_pars = sc.loadobj(calib_pars_file)
+    calib = sc.loadobj(calib_file)
 
     # Initialize the sim, then update the parameters
     sim.initialize()
-    sim.update_pars(calib)
+    sim.update_pars(calib_pars)
 
     # Run and plot
     sim.run()
@@ -120,7 +122,7 @@ if __name__ == '__main__':
     T = sc.tic()
 
     run_calibration = False # Takes ~30seconds
-    load_calibration = True # Takes ~3min
+    load_calibration = True # Takes 2-3min
 
     if run_calibration: sim, calib = run_calibration()
     if load_calibration: sim, calib = run_premade_calibration()
