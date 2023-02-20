@@ -98,17 +98,20 @@ def run_premade_calibration():
 
     # Load pre-made calibration parameters
     file = 'results/nigeria_pars_prerun.obj'
-    calib_pars = sc.loadobj(file)
+    calib = sc.loadobj(file)
 
     # Initialize the sim, then update the parameters
     sim.initialize()
-    sim.update_pars(calib_pars)
+    sim.update_pars(calib)
 
     # Run and plot
     sim.run()
     sim.plot()
 
-    return sim
+    # Plot calibration
+    calib.plot()
+
+    return sim, calib
 
 
 #%% Run as a script
@@ -116,11 +119,11 @@ if __name__ == '__main__':
 
     T = sc.tic()
 
-    run_calibration = False
-    load_calibration = True
+    run_calibration = False # Takes ~30seconds
+    load_calibration = True # Takes ~3min
 
     if run_calibration: sim, calib = run_calibration()
-    if load_calibration: sim = run_premade_calibration()
+    if load_calibration: sim, calib = run_premade_calibration()
 
     sc.toc(T)
     print('Done.')
