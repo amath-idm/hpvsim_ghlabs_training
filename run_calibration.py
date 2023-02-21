@@ -72,7 +72,7 @@ def run_calibration():
     return sim, calib
 
 
-def run_premade_calibration():
+def run_calibrated_sim(plot_sim=False, interventions=None, label=None):
     '''
     Run a premade calibration for Nigeria
     '''
@@ -93,14 +93,15 @@ def run_premade_calibration():
         ms_agent_ratio=100,
     )
 
-    # Make sim
-    sim = hpv.Sim(pars=pars)
+    # Optionally add interventions
+    if interventions is not None:
+        sim = hpv.Sim(pars=pars, interventions=interventions, label=label)
+    else:
+        sim = hpv.Sim(pars=pars, label=label)
 
     # Load pre-made calibration parameters
     calib_pars_file = 'results/nigeria_pars_prerun.obj'
-    calib_file = 'results/nigeria_calib.obj'
     calib_pars = sc.loadobj(calib_pars_file)
-    calib = sc.loadobj(calib_file)
 
     # Initialize the sim, then update the parameters
     sim.initialize()
@@ -108,12 +109,17 @@ def run_premade_calibration():
 
     # Run and plot
     sim.run()
-    sim.plot()
+    if plot_sim:
+        sim.plot()
 
-    # Plot calibration
+    return sim
+
+
+def plot_calibration():
+    calib_file = 'results/nigeria_calib.obj'
+    calib = sc.loadobj(calib_file)
     calib.plot()
-
-    return sim, calib
+    return calib
 
 
 #%% Run as a script
@@ -121,11 +127,14 @@ if __name__ == '__main__':
 
     T = sc.tic()
 
-    run_calibration = False # Takes ~30seconds
-    load_calibration = True # Takes 2-3min
+    # Define what to run
+    do_run_calibration = True # Takes ~30seconds
+    do_run_calibrated_sim = True # Takes 2-3min
+    do_plot_calibration = True # Takes a few seconds
 
-    if run_calibration: sim, calib = run_calibration()
-    if load_calibration: sim, calib = run_premade_calibration()
+    if do_run_calibration: sim, calib = run_calibration()
+    if do_run_calibrated_sim: sim = run_calibrated_sim(plot_sim=True)
+    if do_plot_calibration: calib = plot_calibration()
 
     sc.toc(T)
     print('Done.')
